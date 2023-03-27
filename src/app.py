@@ -1,12 +1,11 @@
-from flask import Flask
-from markupsafe import escape
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route('/add-player/<name>/<float:buyin>/<float:cashout>')
 def add_player(name, buyin, cashout):
-    return f"NOT IMPLEMENTED: Added player {escape(name)} with buyin {buyin} cashed out with {cashout}"
+    return render_template('add_player_result.html', name=name, buyin=buyin, cashout=cashout)
 
 
 if __name__ == '__main__':
