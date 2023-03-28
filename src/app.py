@@ -3,6 +3,11 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+
 @app.route('/add-player/<name>/<float:buyin>/<float:cashout>')
 def add_player(name, buyin, cashout):
     return render_template('add_player_result.html', name=name, buyin=buyin, cashout=cashout)
