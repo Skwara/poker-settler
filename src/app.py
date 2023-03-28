@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from werkzeug.exceptions import HTTPException, abort
 
 app = Flask(__name__)
 
@@ -15,25 +16,28 @@ def add_player():
         buyin = request.form['buyin']
         cashout = request.form['cashout']
         if not name:
-            print("Name is empty")
+            abort(400, "Player name is empty")
         elif not buyin:
-            print("Buy-in is empty")
+            abort(400, "Buy-in is empty")
         elif not cashout:
-            print("Cashout is empty")
+            abort(400, "Cashout is empty")
         else:
-            try:
-                buyin = float(buyin)
-                cashout = float(cashout)
-            except ValueError:
-                return "Bad request!", 400
             # TODO: Call add_player on algorithm class
-            return render_template('add_player_result.html', name=name, buyin=buyin, cashout=cashout)
+            return render_template('add_player_result.html', name=name, buyin=float(buyin), cashout=float(cashout))
     return render_template('add_player.html')
 
 
 @app.route('/add-player/<name>/<float:buyin>/<float:cashout>')
 def add_player_rest(name, buyin, cashout):
     return render_template('add_player_result.html', name=name, buyin=buyin, cashout=cashout)
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    if isinstance(e, HTTPException):
+        return e.get_response()
+    else:
+        return repr(e)
 
 
 if __name__ == '__main__':
