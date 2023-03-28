@@ -2,18 +2,24 @@
 {% block title %}Add player{% endblock %}
 {% block content %}
 <form method="post">
-    <label for="name">Player name</label>
+    <div class="form-group">
+        <label for="name">Player name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Player name"
+               value="{{ request.form['title'] }}"/>
+    </div>
     <br>
-    <input type="text" name="name" placeholder="Player name" value="{{ request.form['title'] }}"/>
+    <div class="form-group">
+        <label for="buyin">Total buy-in</label>
+        <input type="number" class="form-control" step="0.01" id="buyin" name="buyin" placeholder="Total buy-in"
+               value="{{ request.form['buyin'] }}"/>
+    </div>
     <br>
-    <label for="buyin">Total buy-in</label>
+    <div class="form-group">
+        <label for="cashout">Cashout</label>
+        <input type="number" class="form-control" step="0.01" id="cashout" name="cashout" placeholder="Cashout"
+               value="{{ request.form['cashout'] }}"/>
+    </div>
     <br>
-    <input type="number" step="0.01" name="buyin" placeholder="Total buy-in" value="{{ request.form['buyin'] }}"/>
-    <br>
-    <label for="cashout">Cashout</label>
-    <br>
-    <input type="number" step="0.01" name="cashout" placeholder="Cashout" value="{{ request.form['cashout'] }}"/>
-    <br>
-    <button type="submit">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 {% endblock %}
