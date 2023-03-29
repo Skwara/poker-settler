@@ -68,17 +68,16 @@ class PokerSettler:
         with self._lock:
             self._results.append(self.Result(name, buyin, cashout))
 
-    def settlement(self) -> Settlement:
+    def settlement(self) -> str:
         with self._lock:
             self._settlement.reset()
             winners, losers = self._split_winners_and_losers()
             winners, losers = self._settle_exact_matches(winners, losers)
             winners, losers = self._settle_all(winners, losers)
             if winners or losers:
-                self._settlement.reset()
                 self._settlement.unmatched.extend(winners)
                 self._settlement.unmatched.extend(losers)
-            return self._settlement
+            return str(self._settlement)
 
     def _split_winners_and_losers(self) -> ([Result], [Result]):
         winners = []

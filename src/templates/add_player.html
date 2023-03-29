@@ -9,14 +9,14 @@
     </div>
     <br>
     <div class="form-group">
-        <label for="buyin">Total buy-in</label>
-        <input type="number" class="form-control" step="0.01" id="buyin" name="buyin" placeholder="Total buy-in"
+        <label for="buyin">Total buy-in (in chips)</label>
+        <input type="number" class="form-control" id="buyin" name="buyin" placeholder="Total buy-in"
                value="{{ request.form['buyin'] }}"/>
     </div>
     <br>
     <div class="form-group">
-        <label for="cashout">Cashout</label>
-        <input type="number" class="form-control" step="0.01" id="cashout" name="cashout" placeholder="Cashout"
+        <label for="cashout">Cashout (in chips)</label>
+        <input type="number" class="form-control" id="cashout" name="cashout" placeholder="Cashout"
                value="{{ request.form['cashout'] }}"/>
     </div>
     <br>

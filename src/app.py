@@ -1,12 +1,15 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
 from werkzeug.exceptions import HTTPException, abort
 
+from poker_settler import PokerSettler
+
 app = Flask(__name__)
+settler = PokerSettler()  # TODO: Don't use global variables with Flask
 
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', settlement=settler.settlement())
 
 
 @app.route('/add-player/', methods=('GET', 'POST'))
@@ -22,14 +25,20 @@ def add_player():
         elif not cashout:
             abort(400, "Cashout is empty")
         else:
-            # TODO: Call add_player on algorithm class
-            return render_template('add_player_result.html', name=name, buyin=float(buyin), cashout=float(cashout))
+            return add_player_rest(name=name, buyin=buyin, cashout=cashout)
     return render_template('add_player.html')
 
 
-@app.route('/add-player/<name>/<float:buyin>/<float:cashout>')
+@app.route('/add-player/<name>/<int:buyin>/<int:cashout>')
 def add_player_rest(name, buyin, cashout):
-    return render_template('add_player_result.html', name=name, buyin=buyin, cashout=cashout)
+    settler.add_result(name, int(buyin), int(cashout))
+    return redirect(url_for('home'))
+
+
+@app.route('/reset')
+def reset():
+    settler.reset()
+    return redirect(url_for('home'))
 
 
 @app.errorhandler(Exception)

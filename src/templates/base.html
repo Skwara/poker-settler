@@ -19,6 +19,9 @@
                 <a class="nav-link" href="{{ url_for('add_player') }}">Add player</a>
             </li>
         </ul>
+        <form class="form-inline my-2 my-lg-0" action="{{ url_for('reset') }}">
+            <button class="btn btn-danger" type="submit">Reset</button>
+        </form>
     </div>
 </nav>
 
