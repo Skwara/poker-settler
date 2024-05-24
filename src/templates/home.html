@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<pre>{{ settlement }}</pre>
+<pre id="settlement">{{ settlement }}</pre>
+<button class="btn btn-primary" onclick="copySettlementToClipboard()">Copy</button>
+
+<script>
+    function copySettlementToClipboard() {
+      navigator.clipboard.writeText(document.getElementById("settlement").innerHTML);
+    }
+</script>
+
 {% endblock %}
