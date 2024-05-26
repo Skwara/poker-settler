@@ -1,0 +1,51 @@
+<form method="post">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Player name</th>
+            <th style="width: 200px">Total buy-in (in chips)</th>
+            <th style="width: 200px">Cashout (in chips)</th>
+        </tr>
+        </thead>
+        <tbody id="resultTableBody">
+        {% for result in results %}
+        <tr>
+            <td><input class="form-control" id="name{{loop.index0}}" name="name{{loop.index0}}"
+                       placeholder="Player name"
+                       required type="text" value="{{result.name}}"></td>
+            <td><input class="form-control" id="buyin{{loop.index0}}" name="buyin{{loop.index0}}"
+                       placeholder="Total buy-in"
+                       required type="number" value="{{result.buyin}}"></td>
+            <td><input class="form-control" id="cashout{{loop.index0}}" name="cashout{{loop.index0}}"
+                       placeholder="Cashout"
+                       required type="number" value="{{result.cashout}}"></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="resultCount" name="resultCount" type="hidden" value="{{ results|length }}">
+    <button class="btn btn-primary" onclick="addResultRow()" type="button">+</button>
+    <button class="btn btn-primary" formaction="{{ url_for('submit_results') }}" type="submit">Submit</button>
+    <button class="btn btn-danger float-end" formaction="{{ url_for('reset') }}" type="submit">Reset</button>
+</form>
+
+<script>
+    function addResultRow() {
+        const tableBody = document.getElementById('resultTableBody');
+        const newRow = document.createElement('tr');
+        resultCount = document.getElementById('resultCount');
+
+        const nameId = 'name' + resultCount.value;
+        const buyinId = 'buyin' + resultCount.value;
+        const cashoutId = 'cashout' + resultCount.value;
+
+        newRow.innerHTML = `
+            <td><input type="text" class="form-control" id="${nameId}" name="${nameId}" placeholder="Player name" required></td>
+            <td><input type="number" class="form-control" id="${buyinId}" name="${buyinId}" placeholder="Total buy-in" required></td>
+            <td><input type="number" class="form-control" id="${cashoutId}" name="${cashoutId}" placeholder="Cashout" required></td>
+        `;
+
+        resultCount.value = parseInt(resultCount.value) + 1;
+        tableBody.appendChild(newRow);
+    }
+</script>

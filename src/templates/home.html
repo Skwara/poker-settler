@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<pre id="settlement">{{ settlement }}</pre>
-<button class="btn btn-primary" onclick="copySettlementToClipboard()">Copy</button>
+
+<br>
+
+<div class="container">
+    <h3>Results</h3>
+    {% include 'result_table.html' %}
+</div>
+
+<br>
+
+<div class="container">
+    <h3>Settlement</h3>
+    <pre id="settlement">{{ settlement }}</pre>
+    <button class="btn btn-primary" onclick="copySettlementToClipboard()">Copy</button>
+</div>
 
 <script>
     function copySettlementToClipboard() {

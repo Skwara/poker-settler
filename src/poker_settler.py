@@ -79,6 +79,10 @@ class PokerSettler:
                 self._settlement.unmatched.extend(losers)
             return str(self._settlement)
 
+    @property
+    def results(self):
+        return self._results
+
     def _split_winners_and_losers(self) -> ([Result], [Result]):
         winners = []
         losers = []

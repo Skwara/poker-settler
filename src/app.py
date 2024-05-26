@@ -9,33 +9,28 @@ settler = PokerSettler()  # TODO: Don't use global variables with Flask
 
 @app.route('/')
 def home():
-    return render_template('home.html', settlement=settler.settlement())
+    return render_template('home.html', results=settler.results, settlement=settler.settlement())
 
 
-@app.route('/add-player/', methods=('GET', 'POST'))
-def add_player():
-    if request.method == 'POST':
-        name = request.form['name']
-        buyin = request.form['buyin']
-        cashout = request.form['cashout']
+@app.route('/submit_results', methods=['POST'])
+def submit_results():
+    settler.reset()
+    result_count = int(request.form['resultCount'])
+    for player_idx in range(result_count):
+        name = request.form[f'name{player_idx}']
+        buyin = request.form[f'buyin{player_idx}']
+        cashout = request.form[f'cashout{player_idx}']
         if not name:
             abort(400, "Player name is empty")
         elif not buyin:
             abort(400, "Buy-in is empty")
         elif not cashout:
             abort(400, "Cashout is empty")
-        else:
-            return add_player_rest(name=name, buyin=buyin, cashout=cashout)
-    return render_template('add_player.html')
-
-
-@app.route('/add-player/<name>/<int:buyin>/<int:cashout>')
-def add_player_rest(name, buyin, cashout):
-    settler.add_result(name, int(buyin), int(cashout))
+        settler.add_result(name, int(buyin), int(cashout))
     return redirect(url_for('home'))
 
 
-@app.route('/reset')
+@app.route('/reset', methods=['POST'])
 def reset():
     settler.reset()
     return redirect(url_for('home'))
