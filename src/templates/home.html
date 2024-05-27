@@ -19,8 +19,14 @@
 
 <script>
     function copySettlementToClipboard() {
-      navigator.clipboard.writeText(document.getElementById("settlement").innerHTML);
-    }
+        var tempTextArea = document.createElement("textarea");
+        tempTextArea.value = document.getElementById("settlement").innerText;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        tempTextArea.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand("copy");
+        document.body.removeChild(tempTextArea);
+}
 </script>
 
 {% endblock %}
