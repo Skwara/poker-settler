@@ -1,44 +1,53 @@
 <form method="post">
     <table class="table table-bordered">
         <tbody id="resultTableBody">
-        {% for result in results %}
-        <tr>
-            <td><input class="form-control" id="name{{loop.index0}}" name="name{{loop.index0}}"
-                       placeholder="Player name"
-                       required type="text" value="{{result.name}}"></td>
-            <td><input class="form-control" id="buyin{{loop.index0}}" name="buyin{{loop.index0}}"
-                       placeholder="Total buy-in"
-                       required type="number" value="{{result.buyin}}"></td>
-            <td><input class="form-control" id="cashout{{loop.index0}}" name="cashout{{loop.index0}}"
-                       placeholder="Cashout"
-                       required type="number" value="{{result.cashout}}"></td>
-        </tr>
-        {% endfor %}
         </tbody>
     </table>
-    <input id="resultCount" name="resultCount" type="hidden" value="{{ results|length }}">
+    <input id="resultCount" name="resultCount" type="hidden" value="0">
     <button class="btn btn-primary" onclick="addResultRow()" type="button">+</button>
     <button class="btn btn-primary" formaction="{{ url_for('submit_results') }}" type="submit">Submit</button>
     <button class="btn btn-danger float-end" formaction="{{ url_for('reset') }}" type="submit">Reset</button>
 </form>
 
+<template id="resultRowTemplate">
+    <tr>
+        <td><input type="text" class="form-control" id="name" name="name" placeholder="Player name" required></td>
+        <td><input type="number" class="form-control" id="buyin" name="buyin" placeholder="Total buy-in" required></td>
+        <td><input type="number" class="form-control" id="cashout" name="cashout" placeholder="Cashout" required></td>
+    </tr>
+</template>
+
 <script>
-    function addResultRow() {
+    const initialResults = {{ results | tojson | safe }};
+    document.addEventListener('DOMContentLoaded', populateInitialRows);
+
+    function populateInitialRows() {
+        initialResults.forEach((result) => {
+            addResultRow(result);
+        });
+    }
+
+    function addResultRow(result = {}) {
         const tableBody = document.getElementById('resultTableBody');
-        const newRow = document.createElement('tr');
-        resultCount = document.getElementById('resultCount');
+        const resultRowTemplate = document.getElementById('resultRowTemplate').content.cloneNode(true);
+        const resultCount = document.getElementById('resultCount');
 
-        const nameId = 'name' + resultCount.value;
-        const buyinId = 'buyin' + resultCount.value;
-        const cashoutId = 'cashout' + resultCount.value;
+        const nameInput = resultRowTemplate.getElementById('name');
+        nameInput.id += resultCount.value;
+        nameInput.name += resultCount.value;
+        nameInput.value = result.name ?? '';
 
-        newRow.innerHTML = `
-            <td><input type="text" class="form-control" id="${nameId}" name="${nameId}" placeholder="Player name" required></td>
-            <td><input type="number" class="form-control" id="${buyinId}" name="${buyinId}" placeholder="Total buy-in" required></td>
-            <td><input type="number" class="form-control" id="${cashoutId}" name="${cashoutId}" placeholder="Cashout" required></td>
-        `;
+        const buyinInput = resultRowTemplate.getElementById('buyin');
+        buyinInput.id += resultCount.value;
+        buyinInput.name += resultCount.value;
+        buyinInput.value = result.buyin ?? '';
 
+        const cashoutInput = resultRowTemplate.getElementById('cashout');
+        cashoutInput.id += resultCount.value;
+        cashoutInput.name += resultCount.value;
+        cashoutInput.value = result.cashout ?? '';
+
+        tableBody.appendChild(resultRowTemplate);
         resultCount.value = parseInt(resultCount.value) + 1;
-        tableBody.appendChild(newRow);
     }
 </script>
