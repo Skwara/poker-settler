@@ -30,7 +30,7 @@ def submit_results():
     return redirect(url_for('home'))
 
 
-@app.route('/reset', methods=['POST'])
+@app.route('/reset')
 def reset():
     settler.reset()
     return redirect(url_for('home'))
