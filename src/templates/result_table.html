@@ -11,9 +11,21 @@
 
 <template id="resultRowTemplate">
     <tr>
-        <td><input type="text" class="form-control" id="name" name="name" placeholder="Player name" required></td>
-        <td><input type="number" class="form-control" id="buyin" name="buyin" placeholder="Total buy-in" required></td>
-        <td><input type="number" class="form-control" id="cashout" name="cashout" placeholder="Cashout" required></td>
+        <td>
+            <div class="row g-2">
+                <div class="col-12 col-sm-6">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Player name" required>
+                </div>
+                <div class="col-6 col-sm-3">
+                    <input type="number" class="form-control" id="buyin" name="buyin" placeholder="Total buy-in"
+                           required>
+                </div>
+                <div class="col-6 col-sm-3">
+                    <input type="number" class="form-control" id="cashout" name="cashout" placeholder="Cashout"
+                           required>
+                </div>
+            </div>
+        </td>
     </tr>
 </template>
 
